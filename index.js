@@ -1,13 +1,36 @@
 module.exports = require('./component/calculator');
 
-/* const a = require('./component/calculator');
+const { calculate, emitter } = require('./component/calculator');
+const { TimesByTwo } = require('./component/stream-transformer');
 
-async function test() {
-    let b = await a.add(1, 3)
-        .catch((err) => {
-            console.log(err);
+emitter.on('add:response', function (res) {
+    TimesByTwo(res.data, './outFile-add.txt')
+        .then((res) => {
+            console.log(res);
         });
-    console.log(b);
-}
-console.log(a.INVALID_PARAM);
-test(); */
+})
+calculate('add', 3, 10);
+
+emitter.on('substract:response', function (res) {
+    TimesByTwo(res.data, './outFile-substract.txt')
+        .then((res) => {
+            console.log(res);
+        });
+})
+calculate('substract', 10, 3);
+
+emitter.on('divide:response', function (res) {
+    TimesByTwo(res.data, './outFile-divide.txt')
+        .then((res) => {
+            console.log(res);
+        });
+})
+calculate('divide', 60, 6);
+
+emitter.on('multiple:response', function (res) {
+    TimesByTwo(res.data, './outFile-multiple.txt')
+        .then((res) => {
+            console.log(res);
+        });
+})
+calculate('multiple', 12, 12);
